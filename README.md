@@ -1,2 +1,1 @@
-# SD
 Distributed Systems' practices
