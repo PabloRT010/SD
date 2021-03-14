@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3.6
 
 with open('/etc/passwd', 'r') as fichero:
     for linea in fichero:
