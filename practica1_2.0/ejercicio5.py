@@ -9,12 +9,11 @@ ficheros = os.listdir('.')
 for x in ficheros:
 	print(x)
 
-print('Escriba el nombre del fichero que desea renombrar:')
-fichero = input()
+fichero = input('Escriba el nombre del fichero que desea renombrar:')
+)
 
 if os.path.isfile(fichero): 
-	print('Escriba el nuevo nombre del fichero:')
-	renombre = input()
+	renombre = input('Escriba el nuevo nombre del fichero:')
 	if os.path.isfile(renombre):
 		print('Imposible renombrar. El nuevo nombre del fichero ya existe.')
 	else:
