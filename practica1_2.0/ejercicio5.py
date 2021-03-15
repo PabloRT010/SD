@@ -10,7 +10,6 @@ for x in ficheros:
 	print(x)
 
 fichero = input('Escriba el nombre del fichero que desea renombrar:')
-)
 
 if os.path.isfile(fichero): 
 	renombre = input('Escriba el nuevo nombre del fichero:')
