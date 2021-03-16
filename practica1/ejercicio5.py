@@ -1,20 +1,23 @@
-#/usr/bin/ python3
-import subprocess
+#! /usr/bin/python3.6
+import os
 
-print('Se encuentra en el directorio:')
-subprocess.run(["pwd"])
-subprocess.run(["ls"])
+directorio = os.getcwd()
+print('El directorio actual de trabajo es: ' + directorio) #imprimo el directorio de trabajo
 
+print('Los ficheros que hay en ' + directorio + ' son:')
+ficheros = os.listdir('.') #obtengo lista de los ficheros existentes en el directorio actual (.)
+for x in ficheros: 
+	print(x)
 
-print('Escriba el nombre del fichero que desea renombrar:')
-fichero = input() 
-print('Escriba el nuevo nombre:')
-nuevoNombre = input()
-resultado2 = subprocess.run(["mv", fichero, nuevoNombre]) 
-#while (resultado2.returncode != 0): #si el comando anterior se realizo de forma correcta, devolveria 0 y no entraria en el while
- #   print('Escriba el nombre del fichero que desea renombrar:')
-  #  fichero = input()
-   # print('Escriba el nuevo nombre:')
-   # nuevoNombre = input()
-   # resultado2 = subprocess.run(["mv", fichero, nuevoNombre])
+fichero = input('Escriba el nombre del fichero que desea renombrar: ') 
 
+if os.path.isfile(fichero): #si el fichero a renombrar existe, sigue el programa
+	renombre = input('Escriba el nuevo nombre del fichero: ')
+	if os.path.isfile(renombre): #si el nuevo nombre ya esta siendo utilizado
+		print('Imposible renombrar. Conflicto con un fichero que ya existe.')
+	else:
+		os.rename(fichero, renombre) # en caso contrario se renombra
+		print('El fichero ha sido renombrado correctamente.')
+		
+else: #si el fichero no existiese
+	print('El fichero que desea renombrar no existe.')
