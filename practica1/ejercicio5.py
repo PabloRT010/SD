@@ -7,7 +7,8 @@ print('El directorio actual de trabajo es: ' + directorio) #imprimo el directori
 print('Los ficheros que hay en ' + directorio + ' son:')
 ficheros = os.listdir('.') #obtengo lista de los ficheros existentes en el directorio actual (.)
 for x in ficheros: 
-	print(x)
+	if(os.path.isfile(x)):
+		print(x)
 
 fichero = input('Escriba el nombre del fichero que desea renombrar: ') 
 
@@ -20,4 +21,4 @@ if os.path.isfile(fichero): #si el fichero a renombrar existe, sigue el programa
 		print('El fichero ha sido renombrado correctamente.')
 		
 else: #si el fichero no existiese
-	print('El fichero que desea renombrar no existe.')
+	print('El fichero que desea renombrar no existe o es un directorio.')
