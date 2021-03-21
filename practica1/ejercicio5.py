@@ -7,7 +7,7 @@ print('El directorio actual de trabajo es: ' + directorio) #imprimo el directori
 print('Los ficheros que hay en ' + directorio + ' son:')
 ficheros = os.listdir('.') #obtengo lista de los ficheros existentes en el directorio actual (.)
 for x in ficheros: 
-	if(os.path.isfile(x)):
+	if(os.path.isfile(x)): #si hay carpertas no se van a mostrar
 		print(x)
 
 fichero = input('Escriba el nombre del fichero que desea renombrar: ') 
