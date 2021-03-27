@@ -31,25 +31,27 @@ if accion == '1': # enviar fichero
 		FILE = input("Introduce el nombre del fichero: ")
 		if FILE not in listaFicheros:
 			print("Fichero erroneo. Cerramos conexion.")
+			s.send("FAIL".encode("utf-8"))
 			s.close()
-		s.send(FILE.encode("utf-8"))
-		
-		confirmacion = s.recv(1024)		# Espera a la confirmación
-		print("Recibo el siguiente mensaje del servidor: " + confirmacion.decode("utf-8"))
+		else:
+			s.send(FILE.encode("utf-8"))
+			
+			confirmacion = s.recv(1024)		# Espera a la confirmación
+			print("Recibo el siguiente mensaje del servidor: " + confirmacion.decode("utf-8"))
 
-		f = open(FILE, "rb")
-		chunk = f.read(1024)
-		while chunk:
-			s.send(chunk)
+			f = open(FILE, "rb")
 			chunk = f.read(1024)
-		f.close()
+			while chunk:
+				s.send(chunk)
+				chunk = f.read(1024)
+			f.close()
 
-		recepcion = s.recv(1024)
-		print("Recibo el siguiente mensaje del servidor: " + recepcion.decode("utf-8"))
+			recepcion = s.recv(1024)
+			print("Recibo el siguiente mensaje del servidor: " + recepcion.decode("utf-8"))
 
-		os.remove(FILE)
+			os.remove(FILE)
 
-		s.close()
+			s.close()
 
 if accion == '2':
 	ficherosServidor = s.recv(1024)
