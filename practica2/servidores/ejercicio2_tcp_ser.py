@@ -12,7 +12,7 @@ print("Nos quedamos a la espera...")
 s_cliente, addr = socketServidor.accept()
 
 eleccion = s_cliente.recv(1024)
-if eleccion.decode("utf-8") == '1': # el cliente envia
+if eleccion.decode("utf-8") == '1':  # el cliente envia
     print("El cliente ha elegido enviar un fichero...")
     hayFichero = s_cliente.recv(1024)
     if hayFichero.decode("utf-8") == "SI":
@@ -41,18 +41,18 @@ if eleccion.decode("utf-8") == '1': # el cliente envia
         print("El cliente no tiene nada para enviar :(. Cerramos conexion")
         s_cliente.close()
 
-if eleccion.decode("utf-8") == '2': # el cliente recibe fichero
+if eleccion.decode("utf-8") == '2':  # el cliente recibe fichero
     print("El cliente ha elegido recibir un fichero...")
     listaFicheros = os.listdir('.')
     send_txt = json.dumps(listaFicheros)
-    s_cliente.send(send_txt.encode("utf-8")) # enviamos lista de ficheros al cliente
+    s_cliente.send(send_txt.encode("utf-8"))  # enviamos lista de ficheros al cliente
 
     fichero = s_cliente.recv(1024)  # recibimos el fichero que el cliente quiere
     fichero = fichero.decode("utf-8")
 
     f = open(fichero, "rb")
     chunk = f.read(1024)
-    while chunk: # mandamos fichero al cliente
+    while chunk:  # mandamos fichero al cliente
         s_cliente.send(chunk)
         chunk = f.read(1024)
     f.close()

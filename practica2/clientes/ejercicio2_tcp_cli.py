@@ -9,11 +9,11 @@ s.connect((HOST, PORT))
 print("*****Hola, CLIENTE*****")
 accion = input("Que desea realizar? \n	1. Enviar fichero.\n	2. Descargar fichero del servidor.\n")
 s.send(accion.encode("utf-8"))
-if accion == '1': # enviar fichero
+if accion == '1':  # enviar fichero
 	listaFicheros = os.listdir('.')
 	hayPDF = 0
 	for fich in listaFicheros:
-		if '.pdf' in fich: # compruebo si hay ficheros con extension .pdf en el directorio del cliente
+		if '.pdf' in fich:  # compruebo si hay ficheros con extension .pdf en el directorio del cliente
 			hayPDF += 1
 
 	if hayPDF == 0:
@@ -21,8 +21,8 @@ if accion == '1': # enviar fichero
 		s.send("NO".encode("utf-8"))
 		s.close()
 
-	else: # si exiten .pdfs
-		s.send("SI".encode("utf-8")) # aviso al servidor de que existen ficheros para mandar
+	else:  # si exiten .pdfs
+		s.send("SI".encode("utf-8"))  # aviso al servidor de que existen ficheros para mandar
 		print("Los ficheros disponibles para enviar son: ")
 		for fich in listaFicheros:
 			if '.pdf' in fich:
@@ -55,15 +55,15 @@ if accion == '1': # enviar fichero
 
 if accion == '2':
 	ficherosServidor = s.recv(1024)
-	ficherosServidor = json.loads(ficherosServidor) # recibimos lista de ficheros del servidor
+	ficherosServidor = json.loads(ficherosServidor)  # recibimos lista de ficheros del servidor
 	print("Los ficheros disponibles para recibir son: ")
 	for fich in ficherosServidor:
 		if '.pdf' in fich:
 			print("	○ " + fich)
 	FILE_S = input("Introduce el nombre del fichero: ")
 	if FILE_S not in ficherosServidor:
-			print("Fichero erroneo. Cerramos conexion.")
-			s.close()
+		print("Fichero erroneo. Cerramos conexion.")
+		s.close()
 	else:
 		s.send(FILE_S.encode("utf-8")) 
 		f = open(FILE_S, "wb")
