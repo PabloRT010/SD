@@ -7,21 +7,21 @@ PORT = 1025
 s_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s_udp.bind((HOST, PORT))
 print("Me quedo a la espera")
-mensaje,addrCliente = s_udp.recvfrom(1024)
+mensaje, addrCliente = s_udp.recvfrom(1024)
 print("Recibido el mensaje --->" + str(mensaje.decode("utf-8")))
 print("IP cliente: " + str(addrCliente[0]))
 print("Puerto cliente: " + str(addrCliente[1]))
 while True:
     #  listar ficheros
     listaFichero = os.listdir('.')
-    opcion,addrCliente = s_udp.recvfrom(1024) #  eleccion del cliente
+    opcion, addrCliente = s_udp.recvfrom(1024)  # eleccion del cliente
 
     if opcion.decode("utf-8") == 'ls': 
         lista = pickle.dumps(listaFichero)
         s_udp.sendto(lista, addrCliente)
 
     if opcion.decode("utf-8") == 'rm': 
-        fichero,addrCliente = s_udp.recvfrom(1024) #  recibe el nombre del fichero del cliente
+        fichero, addrCliente = s_udp.recvfrom(1024)  # recibe el nombre del fichero del cliente
         try:
             os.remove(fichero)
             s_udp.sendto("El fichero ha sido borrado con exito".encode("utf-8"), addrCliente)
@@ -31,8 +31,8 @@ while True:
             s_udp.sendto("Algo salio mal.".encode("utf-8"), addrCliente)
 
     if opcion.decode("utf-8") == 'write':
-        fichero,addrCliente = s_udp.recvfrom(1024) 
-        mensaje,addrCliente = s_udp.recvfrom(1024) 
+        fichero, addrCliente = s_udp.recvfrom(1024)
+        mensaje, addrCliente = s_udp.recvfrom(1024)
         f = open(fichero.decode("utf-8"), "w+")
         try:
             f.write(mensaje.decode("utf-8"))
@@ -43,7 +43,7 @@ while True:
             f.close()
     
     if opcion.decode("utf-8") == 'cd':
-        directorio,addrCliente = s_udp.recvfrom(1024) 
+        directorio, addrCliente = s_udp.recvfrom(1024)
         try:
             os.chdir(directorio.decode("utf-8"))
             s_udp.sendto("El cambio de directorio ha sido realizado con exito".encode("utf-8"), addrCliente)
@@ -61,7 +61,6 @@ while True:
         except:
             s_udp.sendto("Algo salio mal".encode("utf-8"), addrCliente)
 
-
-    if opcion.decode("utf-8") == 'exit': 
+    if opcion.decode("utf-8") == 'exit':
         s_udp.close()
         break

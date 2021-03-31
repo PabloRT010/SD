@@ -53,7 +53,7 @@ while True:
         cliente.sendto(destino.encode("utf-8"),(HOST, PORT))
         mensaje, addr = cliente.recvfrom(1024)
         print("Recibo el siguiente mensaje del servidor: " + mensaje.decode("utf-8"))
-        
+
     if eleccion == 'exit':
         cliente.close()
         break
