@@ -33,15 +33,15 @@ if accion == '1':  # enviar fichero
 			print("Fichero erroneo. Cerramos conexion.")
 			s.send("FAIL".encode("utf-8"))
 			s.close()
-		else:
+		else:  #  si existe el fichero
 			s.send(FILE.encode("utf-8"))
 			
-			confirmacion = s.recv(1024)		# Espera a la confirmación
+			confirmacion = s.recv(1024)		# espera a la confirmación
 			print("Recibo el siguiente mensaje del servidor: " + confirmacion.decode("utf-8"))
 
 			f = open(FILE, "rb")
-			chunk = f.read(1024)
-			while chunk:
+			chunk = f.read(1024) 
+			while chunk:  #  mandamos fichero
 				s.send(chunk)
 				chunk = f.read(1024)
 			f.close()
@@ -49,11 +49,11 @@ if accion == '1':  # enviar fichero
 			recepcion = s.recv(1024)
 			print("Recibo el siguiente mensaje del servidor: " + recepcion.decode("utf-8"))
 
-			os.remove(FILE)
-
+			os.remove(FILE)  #  eliminamos fichero
+			print("Cerramos conexion")
 			s.close()
 
-if accion == '2':
+if accion == '2': #  elige descargar fichero 
 	ficherosServidor = s.recv(1024)
 	ficherosServidor = json.loads(ficherosServidor)  # recibimos lista de ficheros del servidor
 	print("Los ficheros disponibles para recibir son: ")
@@ -61,14 +61,14 @@ if accion == '2':
 		if '.pdf' in fich:
 			print("	○ " + fich)
 	FILE_S = input("Introduce el nombre del fichero: ")
-	if FILE_S not in ficherosServidor:
+	if FILE_S not in ficherosServidor:  #  si el fichero elegido no se encuentra en los disponibles del servidor se cierra la conexion
 		print("Fichero erroneo. Cerramos conexion.")
 		s.close()
 	else:
-		s.send(FILE_S.encode("utf-8")) 
+		s.send(FILE_S.encode("utf-8"))  #  si el fichero se encuentra
 		f = open(FILE_S, "wb")
-		while True:
-			chunk = s.recv(1024)
+		while True:  #  mientras haya datos escribe en el fichero
+			chunk = s.recv(1024) 
 			f.write(chunk)
 			if len(chunk) < 1024:
 				print("Fichero recibido.")
