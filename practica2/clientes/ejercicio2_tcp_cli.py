@@ -6,6 +6,8 @@ PORT = 1024
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 
+sobreEscribir = 0 # usaremos para sobreescribir (o no) mas adelante
+
 print("*****Hola, CLIENTE*****")
 accion = input("Que desea realizar? \n	1. Enviar fichero.\n	2. Descargar fichero del servidor.\n")
 s.send(accion.encode("utf-8"))
@@ -16,7 +18,7 @@ if accion == '1':  # enviar fichero
 		if '.pdf' in fich:  # compruebo si hay ficheros con extension .pdf en el directorio del cliente
 			hayPDF += 1
 
-	if hayPDF == 0:
+	if hayPDF == 0:  #no existen pdfs
 		print("No existen ficheros con la extension .pdf para enviar, cerramos conexion.")
 		s.send("NO".encode("utf-8"))
 		s.close()
@@ -35,23 +37,35 @@ if accion == '1':  # enviar fichero
 			s.close()
 		else:  #  si existe el fichero
 			s.send(FILE.encode("utf-8"))
-			
-			confirmacion = s.recv(1024)		# espera a la confirmación
-			print("Recibo el siguiente mensaje del servidor: " + confirmacion.decode("utf-8"))
+			existeFichero = s.recv(1024)
+			if(existeFichero.decode("utf-8") == "TRUE"):
+				respuesta = input("Ya existe un fichero con ese nombre en el servidor, desea sobreescribir? (S/N) ")
+				if (respuesta == "N"):
+					sobreEscribir = 1
+					s.send("N".encode("utf-8"))
+					print("Cerramos conexion")
+					s.close()
+				else:
+					s.send("S".encode("utf-8"))
 
-			f = open(FILE, "rb")
-			chunk = f.read(1024) 
-			while chunk:  #  mandamos fichero
-				s.send(chunk)
-				chunk = f.read(1024)
-			f.close()
+			# si el fichero ya existe y el cliente selecciona sobreescribirlo o el fichero no existe
+			if((existeFichero.decode("utf-8") == "TRUE" and sobreEscribir == 0) or existeFichero.decode("utf-8") != "TRUE"):
+				confirmacion = s.recv(1024)		# espera a la confirmación
+				print("Recibo el siguiente mensaje del servidor: " + confirmacion.decode("utf-8"))
 
-			recepcion = s.recv(1024)
-			print("Recibo el siguiente mensaje del servidor: " + recepcion.decode("utf-8"))
+				f = open(FILE, "rb")
+				chunk = f.read(1024) 
+				while chunk:  #  mandamos fichero
+					s.send(chunk)
+					chunk = f.read(1024)
+				f.close()
 
-			os.remove(FILE)  #  eliminamos fichero
-			print("Cerramos conexion")
-			s.close()
+				recepcion = s.recv(1024)
+				print("Recibo el siguiente mensaje del servidor: " + recepcion.decode("utf-8"))
+
+				os.remove(FILE)  #  eliminamos fichero
+				print("Cerramos conexion")
+				s.close()
 
 if accion == '2': #  elige descargar fichero 
 	ficherosServidor = s.recv(1024)
