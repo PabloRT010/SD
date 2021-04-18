@@ -12,6 +12,8 @@ print("*****Hola, CLIENTE*****")
 accion = input("¿Qué desea realizar? \n	1. Enviar fichero.\n	2. Descargar fichero del servidor.\n")
 s.send(accion.encode("utf-8"))
 if accion == '1':  # enviar fichero
+	confirmacion = s.recv(1024)
+	print("Recibo <<" +confirmacion.decode("utf-8")+ ">> del servidor")
 	listaFicheros = os.listdir('.')
 	hayPDF = 0
 	for fich in listaFicheros:

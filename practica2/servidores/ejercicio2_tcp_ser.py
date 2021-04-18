@@ -16,6 +16,7 @@ sobreEscribir = 0  # usaremos como centinela para sobreescribir (o no) más adel
 eleccion = s_cliente.recv(1024)
 if eleccion.decode("utf-8") == '1':  # el cliente envia
     print("El cliente ha elegido enviar un fichero...")
+    s_cliente.send("Estoy listo".encode("utf'8"))
     hayFichero = s_cliente.recv(1024)
     if hayFichero.decode("utf-8") == "SI":  # si el cliente tiene pdfs
         # recibimos mensaje del fichero
