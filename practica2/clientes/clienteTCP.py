@@ -1,8 +1,8 @@
 import socket
 HOST = 'localhost'
 PORT = 1024
-cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-cliente.connect((HOST, PORT))
+cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  #crea socket
+cliente.connect((HOST, PORT))  #conexion
 
 cliente.send("Hola, soy el cliente".encode("utf-8"))
 mensaje = cliente.recv(1024)

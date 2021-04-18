@@ -1,12 +1,12 @@
 import socket
 HOST = 'localhost'
 PORT = 1024
-servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-servidor.bind((HOST, PORT))
-servidor.listen(1)
+servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  #crea socket
+servidor.bind((HOST, PORT))  #enlaza puertos
+servidor.listen(1)  #escuchar
 
 print("Servidor a la espera...")
-s_cliente, addr = servidor.accept()
+s_cliente, addr = servidor.accept()  #acepta conexion
 mensaje = s_cliente.recv(1024)
 
 print("Recibo: <<"+mensaje.decode("utf-8")+">> del cliente con la direccion " + str(addr))
