@@ -6,22 +6,22 @@ cliente = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 cliente.sendto("Soy el cliente".encode("utf-8"),(HOST, PORT))
 while True:
     opciones = ["ls", "rm", "write", "cd", "mv", "exit"]  # opciones disponibles
-    while True:  # repetir hasta que exista la opcion introducida
+    while True:  # repetir hasta que exista la opción introducida
         print("\n\nBienvenido, cliente. Sus opciones son: ")
         print(', '.join(opciones))
         eleccion = input()
-        if eleccion in opciones:  # si el cliente introduce una opcion valida
+        if eleccion in opciones:  # si el cliente introduce una opción válida
             break
         else:  # si no existe
             print("El comando introducido no existe")
-    cliente.sendto(eleccion.encode("utf-8"),(HOST, PORT))  # enviamos al servidor la opcion
+    cliente.sendto(eleccion.encode("utf-8"),(HOST, PORT))  # enviamos al servidor la opción
 
     if eleccion == 'ls':  # el cliente elige listar el directorio del servidor
         lista, addr = cliente.recvfrom(1024)
         lista = pickle.loads(lista)
         print("Los ficheros y directorios que se encuentran en el directorio actual del servidor son: ")
         if len(lista) == 0:
-            print("El directorio de trabajo se encuentra vacio.")
+            print("El directorio de trabajo se encuentra vacío.")
         else:
             for fichero in lista:
                 print(fichero)

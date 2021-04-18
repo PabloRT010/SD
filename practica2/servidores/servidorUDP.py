@@ -6,6 +6,6 @@ servidor.bind((HOST, PORT))
 
 print("Servidor a la espera...")
 mensaje,addr = servidor.recvfrom(1024)  # receive
-print("Recibido el mensaje <<" + str(mensaje.decode("utf-8")) + ">> del cliente con la direccion: (" + str(addr[0]) + ", " + str(addr[1]) + ")")
+print("Recibido el mensaje <<" + str(mensaje.decode("utf-8")) + ">> del cliente con la dirección: (" + str(addr[0]) + ", " + str(addr[1]) + ")")
 
 servidor.close()  # cerramos socket

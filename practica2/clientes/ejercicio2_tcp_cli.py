@@ -6,20 +6,20 @@ PORT = 1024
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 
-sobreEscribir = 0 # usaremos para sobreescribir (o no) mas adelante
+sobreEscribir = 0 # usaremos como centinela para sobreescribir (o no) más adelante
 
 print("*****Hola, CLIENTE*****")
-accion = input("Que desea realizar? \n	1. Enviar fichero.\n	2. Descargar fichero del servidor.\n")
+accion = input("¿Qué desea realizar? \n	1. Enviar fichero.\n	2. Descargar fichero del servidor.\n")
 s.send(accion.encode("utf-8"))
 if accion == '1':  # enviar fichero
 	listaFicheros = os.listdir('.')
 	hayPDF = 0
 	for fich in listaFicheros:
-		if '.pdf' in fich:  # compruebo si hay ficheros con extension .pdf en el directorio del cliente
+		if '.pdf' in fich:  # compruebo si hay ficheros con extensión .pdf en el directorio del cliente
 			hayPDF += 1
 
 	if hayPDF == 0:  #no existen pdfs
-		print("No existen ficheros con la extension .pdf para enviar, cerramos conexion.")
+		print("No existen ficheros con la extensión .pdf para enviar, cerramos conexión.")
 		s.send("NO".encode("utf-8"))
 		s.close()
 
@@ -32,18 +32,18 @@ if accion == '1':  # enviar fichero
 
 		FILE = input("Introduce el nombre del fichero: ")
 		if FILE not in listaFicheros:
-			print("Fichero erroneo. Cerramos conexion.")
+			print("Fichero erróneo. Cerramos conexión.")
 			s.send("FAIL".encode("utf-8"))
 			s.close()
 		else:  #  si existe el fichero
 			s.send(FILE.encode("utf-8"))
 			existeFichero = s.recv(1024)
 			if(existeFichero.decode("utf-8") == "TRUE"):
-				respuesta = input("Ya existe un fichero con ese nombre en el servidor, desea sobreescribir? (S/N) ")
+				respuesta = input("Ya existe un fichero con ese nombre en el servidor, ¿desea sobreescribir? (S/N) ")
 				if (respuesta == "N"):
 					sobreEscribir = 1
 					s.send("N".encode("utf-8"))
-					print("Cerramos conexion")
+					print("Cerramos conexión")
 					s.close()
 				else:
 					s.send("S".encode("utf-8"))
@@ -64,7 +64,7 @@ if accion == '1':  # enviar fichero
 				print("Recibo el siguiente mensaje del servidor: " + recepcion.decode("utf-8"))
 
 				os.remove(FILE)  #  eliminamos fichero
-				print("Cerramos conexion")
+				print("Cerramos conexión")
 				s.close()
 
 if accion == '2': #  elige descargar fichero 
@@ -75,8 +75,8 @@ if accion == '2': #  elige descargar fichero
 		if '.pdf' in fich:
 			print("	○ " + fich)
 	FILE_S = input("Introduce el nombre del fichero: ")
-	if FILE_S not in ficherosServidor:  #  si el fichero elegido no se encuentra en los disponibles del servidor se cierra la conexion
-		print("Fichero erroneo. Cerramos conexion.")
+	if FILE_S not in ficherosServidor:  #  si el fichero elegido no se encuentra en los disponibles del servidor se cierra la conexión
+		print("Fichero erróneo. Cerramos conexión.")
 		s.close()
 	else:
 		s.send(FILE_S.encode("utf-8"))  #  si el fichero se encuentra
@@ -88,5 +88,5 @@ if accion == '2': #  elige descargar fichero
 				print("Fichero recibido.")
 				break
 		f.close()
-	print("Cerramos conexion")
+	print("Cerramos conexión")
 	s.close()

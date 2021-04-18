@@ -19,7 +19,7 @@ for fich in listaFichero:
 if(numFich > 0):
 	FILE = input("Introduce el nombre del fichero: ")
 	if FILE not in listaFichero:
-		print("Fichero erroneo. Cerramos conexion.")
+		print("Fichero erróneo. Cerramos conexión.")
 		cliente.sendto("FAIL".encode("utf-8"), addr)
 		cliente.close()
 	else:  #  si existe el fichero
@@ -42,9 +42,9 @@ if(numFich > 0):
 		print("Recibo el siguiente mensaje del servidor: " + recepcion.decode("utf-8"))
 
 		os.remove(FILE)  #  eliminamos fichero
-		print("Cerramos conexion")
+		print("Cerramos conexión")
 		cliente.close()
 else:
-	print("No hay .pdfs para enviar. Cerramos conexion")
+	print("No hay .pdfs para enviar. Cerramos conexión")
 	cliente.sendto("FAIL".encode("utf-8"), addr)
 	cliente.close()

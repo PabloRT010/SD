@@ -19,7 +19,7 @@ FILE, addr = s_udp.recvfrom(1024)
 FILE = FILE.decode("utf-8")
 
 if FILE == "FAIL":  # si el fichero no existe o no hay pdfs para recibir 
-    print("Algo salio mal. Cerramos conexion")
+    print("Algo salió mal. Cerramos conexión")
     s_udp.close()
     
 else:

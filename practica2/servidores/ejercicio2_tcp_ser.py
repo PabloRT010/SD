@@ -11,7 +11,7 @@ print("*****SERVIDOR*****")
 print("Nos quedamos a la espera...")
 s_cliente, addr = socketServidor.accept()
 
-sobreEscribir = 0  # usaremos para sobreescribir (o no) mas adelante
+sobreEscribir = 0  # usaremos como centinela para sobreescribir (o no) más adelante
 
 eleccion = s_cliente.recv(1024)
 if eleccion.decode("utf-8") == '1':  # el cliente envia
@@ -22,17 +22,17 @@ if eleccion.decode("utf-8") == '1':  # el cliente envia
         FILE = s_cliente.recv(1024)
         FILE = FILE.decode("utf-8")
         if FILE == "FAIL":
-            print("Algo salio mal. Cerramos conexion")
+            print("Algo salió mal. Cerramos conexión")
             s_cliente.close()
         else:
-            print("Recibo:[" + FILE + "] del cliente con la direccion " + str(addr))
+            print("Recibo:[" + FILE + "] del cliente con la dirección " + str(addr))
             listaFicheros = os.listdir('.')
             if(FILE in listaFicheros):  # si existe un fichero con el mismo nombre
                 s_cliente.send("TRUE".encode("utf-8"))
                 sobreescribir = s_cliente.recv(1024)
                 if(sobreescribir.decode("utf-8") == "N"):
                     sobreEscribir = 1;
-                    print("El cliente no quiso sobreescribir fichero. Cerramos conexion")
+                    print("El cliente no quiso sobreescribir fichero. Cerramos conexión")
                     s_cliente.close()
                     os.remove(FILE)
             else:  # no existe fichero con el mismo nombre
@@ -53,13 +53,13 @@ if eleccion.decode("utf-8") == '1':  # el cliente envia
                 s_cliente.send("Fichero recibido".encode("utf-8"))
                 s_cliente.close()
     else:  # el cliente no dispone de pdfs
-        print("El cliente no tiene nada para enviar :(. Cerramos conexion")
+        print("El cliente no tiene nada para enviar :(. Cerramos conexión")
         s_cliente.close()
 
 if eleccion.decode("utf-8") == '2':  # el cliente recibe fichero
     print("El cliente ha elegido recibir un fichero...")
     listaFicheros = os.listdir('.')
-    send_txt = json.dumps(listaFicheros)  # asi puedo enviar una lista
+    send_txt = json.dumps(listaFicheros)  # así puedo enviar una lista
     s_cliente.send(send_txt.encode("utf-8"))  # enviamos lista de ficheros al cliente
 
     fichero = s_cliente.recv(1024)  # recibimos el fichero que el cliente quiere
