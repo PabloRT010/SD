@@ -36,17 +36,47 @@ def add_miembro():
 @put('/ModificarMiembro/<dni_usuario>')
 def modificarMiembro(dni_usuario):
     datos = request.json
+    try:
+        miembros[dni_usuario].nombre = datos.get("nombre")
+        miembros[dni_usuario].correo = datos.get("correo")
+        miembros[dni_usuario].departamento = datos.get("departamento")
+        miembros[dni_usuario].cat = datos.get("cat")
+        miembros[dni_usuario].asig = datos.get("asig")
+        response.headers['Content-Type'] = 'application/json'
+        return json.dumps("Miembro modificado exitosamente.")  # Notificamos al cliente de que ha sido modificada la información del miembro
+    except:  # si el miembro no existe
+        response.headers['Content-Type'] = 'application/json'
+        return json.dumps("Miembro no encontrado.")  # Notificamos al cliente de que ha sido modificada la información del miembro
+
 
 
 @get('/ListarMiembros')
 def listarmiembros():
-    listamiembros = []    #listado de miembros que devolveremos
+    listamiembros = []    # listado de miembros que devolveremos
 
-    for dni_usuario, miembro in miembros.items(): #Recorremos el diccionario por objeto (clave y valor)
-        listamiembros.append({'dni' : dni_usuario, 'nombre' : miembro.nombre, 'correo' : miembro.correo, 'departamento' : miembro.departamento, 'cat' : miembro.cat, 'asig' : miembro.asig}) 
+    for dni_usuario, miembro in miembros.items(): # Recorremos el diccionario por objeto (clave y valor)
+        listamiembros.append({'dni' : miembro.dni, 'nombre' : miembro.nombre, 'correo' : miembro.correo, 'departamento' : miembro.departamento, 'cat' : miembro.cat, 'asig' : miembro.asig}) 
 
-    return json.dumps(listamiembros)  #Devolvemos la lista
+    return json.dumps(listamiembros)  # Devolvemos la lista
 
+
+@get('/BuscarMiembro/<dni>')
+def buscarmiembro(dni):
+    return json.dumps({'dni' : miembros[dni].dni, 'nombre' : miembros[dni].nombre, 'correo' : miembros[dni].correo, 'departamento' : miembros[dni].departamento, 'cat' : miembros[dni].cat, 'asig' : miembros[dni].asig})  # Devolvemos la lista
+
+@get('/ConsultaCat/<cat>')
+def consultacat(cat):
+    listamiembros = []
+    for dni, miembro in miembros.items(): # Recorremos el diccionario 
+        if(miembro.cat == cat):
+            listamiembros.append({'dni' : miembro.dni, 'nombre' : miembro.nombre, 'correo' : miembro.correo, 'departamento' : miembro.departamento, 'cat' : miembro.cat, 'asig' : miembro.asig}) 
+    return json.dumps(listamiembros)  # Devolvemos la lista
+
+
+@delete('/EliminarMiembro/<dni>')
+def eliminarmiembro(dni):
+    del miembros[dni]
+    return json.dumps("Miembro borrado correctamente.")
 
 if __name__ == '__main__':
     run(host='localhost', port=8080, debug=True)
