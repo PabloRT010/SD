@@ -79,7 +79,7 @@ while True:
 
     if(eleccion == 6):
         dni = input("Introduce el DNI del usuario: ")
-        respuesta = requests.get('http://localhost:8080/EliminarMiembro/' + str(dni))
-        
+        respuesta = requests.delete('http://localhost:8080/EliminarMiembro/' + str(dni))
+        print(respuesta.text)  # Imprimimos 
     if(eleccion == 7):
         break

@@ -1,5 +1,5 @@
 import json
-from bottle import run, request, response, get, post, put
+from bottle import run, request, response, get, post, put, delete
 # Simulamos base de datos en memoria
 miembros = dict() #key: dni, value: miembro
 # Creamos una clase Miembro con un constructor que tiene: dni, nombre, correo, departamento, categoria y lista de asignaturas que inicializamos
@@ -75,8 +75,11 @@ def consultacat(cat):
 
 @delete('/EliminarMiembro/<dni>')
 def eliminarmiembro(dni):
-    del miembros[dni]
-    return json.dumps("Miembro borrado correctamente.")
+    try:
+        del miembros[dni]
+        return json.dumps("Miembro borrado correctamente.")
+    except:
+        return json.dumps("Algo salió mal.")
 
 if __name__ == '__main__':
     run(host='localhost', port=8080, debug=True)
