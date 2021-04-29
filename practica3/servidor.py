@@ -72,6 +72,16 @@ def buscar_miembro(dni):
     return json.dumps({'dni': miembros[dni].dni, 'nombre': miembros[dni].nombre, 'correo': miembros[dni].correo, 'departamento': miembros[dni].departamento, 'cat': miembros[dni].cat, 'asig': miembros[dni].asig}, indent=2)
     # Devolvemos la lista
 
+@get('/BuscarMiembroNombre/<nombre>')
+def buscar_miembro_nombre(nombre):
+    listamiembros = []    # listado de miembros que devolveremos
+
+    for dni, miembro in miembros.items():  # Recorremos el diccionario por objeto (clave y valor)
+        if miembro.nombre == nombre:
+            listamiembros.append({'dni': miembro.dni, 'nombre': miembro.nombre, 'correo': miembro.correo, 'departamento': miembro.departamento, 'cat': miembro.cat, 'asig': miembro.asig})
+    if len(listamiembros) == 0:
+        return json.dumps("El miembro a buscar no existe")
+    return json.dumps(listamiembros, indent=2)  # Devolvemos la lista
 
 @get('/ConsultaCat/<cat>')
 def consulta_cat(cat):
@@ -91,12 +101,12 @@ def eliminar_miembro(dni):
         return json.dumps("Algo salió mal.")
 
 
-def guardar_datos(dic):
+def guardar_datos(dic):  # usado para guardar los datos en fichero 
     with open("miembros.dat", "wb") as f:
         pickle.dump(dic, f)
 
 
-def carga_datos():
+def carga_datos():  # usado para cargar los datos ya existentes en el sistema
     try:
         with open("miembros.dat", "rb") as f:
             return pickle.load(f)

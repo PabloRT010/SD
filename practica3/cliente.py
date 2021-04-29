@@ -3,12 +3,12 @@ import json
 
 while True:
     while True:
-        print("Elige qué opción desea realizar: ")
+        print("\nElige qué opción desea realizar: ")
         eleccion = int(input(
             "\t 1. Dar de alta un nuevo miembro en el directorio.\n\t 2. Modificar los datos de un miembro.\n\t 3. "
             "Consultar la lista de todos los miembros de la Universidad." 
             "\n\t 4. Hacer consulta por DNI.\n\t 5. Consultar miembros según categoría.\n\t 6. Eliminar miembro ya "
-            "existente.\n\t 7. Salir.\n"))
+            "existente.\n\t 7. Hacer consulta por nombre.\n\t 8. Salir.\n"))
         if eleccion < 7 or eleccion > 0:  # si la eleccion se encuentra entre 1 y 6 (opciones validas)
             break
     if eleccion == 1:
@@ -92,4 +92,10 @@ while True:
         print(respuesta.text)  # Imprimimos
 
     if eleccion == 7:
+        print("Hacer consulta por nombre.")
+        nombre = input("Introduce el nombre del usuario: ")
+        respuesta = requests.get('http://localhost:8080/BuscarMiembroNombre/' + str(nombre))
+        print(respuesta.text)
+
+    if eleccion == 8:
         break
