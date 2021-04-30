@@ -7,7 +7,7 @@ miembros = dict()  # key: dni, value: miembro
 
 
 class Miembro:
-    def __init__(self, dni, nombre, correo, departamento, cat, asig):
+    def __init__(self, dni, nombre, correo, departamento, cat, asig):  # inicializamos
         self.dni = dni
         self.nombre = nombre
         self.correo = correo
@@ -87,7 +87,7 @@ def buscar_miembro_nombre(nombre):
 def consulta_cat(cat):
     listamiembros = []
     for dni, miembro in miembros.items():  # Recorremos el diccionario
-        if miembro.cat == cat:
+        if miembro.cat == cat:  # si la categoria del miembro es igual a la cat buscada, lo incluimos en la lista
             listamiembros.append({'dni': miembro.dni, 'nombre': miembro.nombre, 'correo': miembro.correo, 'departamento': miembro.departamento, 'cat': miembro.cat, 'asig': miembro.asig})
     return json.dumps(listamiembros, indent=2)  # Devolvemos la lista
 

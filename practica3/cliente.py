@@ -1,6 +1,26 @@
 import requests
 import json
 
+# para comprobar que el dni sea valido
+def nif(nif):
+    encontrado = False
+    dic = {'T': 0, 'R': 1, 'W': 2, 'A': 3, 'G': 4, 'M': 5, 'Y': 6, 'F': 7, 'P': 8, 'D': 9, 'X': 10, 'B': 11, 'N': 12, 'J': 13, 'Z': 14, 'S': 15, 'Q': 16,
+          'V': 17, 'H': 18, 'L': 19, 'C': 20, 'K': 21, 'E': 22}  # diccionario con las letras y sus respectivos restos
+    if (len(nif) == 9):  # si el dni tiene 9 caracteres
+        letraControl = nif[8].upper()  # nos quedamos con la letra
+        digitos = int(nif[:8])  # nos quedamos con los digitos
+        for letra, digit in dic.items():  # recorremos diccionario 
+            if digit == (digitos % 23) and letra == letraControl and encontrado == False:  # si el resto de dividir los digitos del DNI entre 23 coinciden con el digito del diccionario, asi como la letra y aun no se ha encontrado
+                encontrado = True  
+                return("DNI valido") 
+                
+        if encontrado == False:  # si no se ha encontrado elemento que coincida en la busqueda anterior (dni erroneo)
+            return("No valido")
+    else:  # si el dni introducido tiene menos caracteres de los que deberia
+        return("No valido")
+        
+            
+
 while True:
     while True:
         print("\nElige qué opción desea realizar: ")
@@ -14,7 +34,11 @@ while True:
     if eleccion == 1:
         # dar de alta
         print("Dar de alta un nuevo miembro.")
-        dni = input("    - DNI: ")  # leemos DNI del usuario
+        while True:
+            dni = input("    - DNI: ")  # leemos DNI del usuario
+            respuesta = nif(dni)
+            if respuesta == "DNI valido":
+                break
         nombre = input("    - Nombre completo: ")  # Leemos el nombre del usuario
         correo = input("    - Correo electrónico: ")  # Leemos correo
         departamento = input("    - Departamento: ")  # Leemos el departamento
