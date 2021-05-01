@@ -96,9 +96,11 @@ def buscar_miembro_nombre(nombre):
 def consulta_cat(cat):
     listamiembros = []
     for dni, miembro in miembros.items():  # Recorremos el diccionario
-        if miembro.cat == cat:  # si la categoria del miembro es igual a la cat buscada, lo incluimos en la lista
+        if miembro.cat == cat:  # si la categoría del miembro es igual a la categoría buscada, lo incluimos en la lista
             listamiembros.append({'dni': miembro.dni, 'nombre': miembro.nombre, 'correo': miembro.correo,
                                   'departamento': miembro.departamento, 'cat': miembro.cat, 'asig': miembro.asig})
+    if len(listamiembros) == 0:
+        return json.dumps("No existen miembros pertenecientes a esa categoría")
     return json.dumps(listamiembros, indent=2)  # Devolvemos la lista
 
 
@@ -106,7 +108,7 @@ def consulta_cat(cat):
 def consulta_asig(asig):
     listamiembros = []
     for dni, miembro in miembros.items():  # recorremos diccionario
-        if miembro.cat == 'PDI':  # si la categoria del miembro es PDI (tiene asignaturas)
+        if miembro.cat == 'PDI':  # si la categoría del miembro es PDI (tiene asignaturas)
             for asignatura in miembro.asig:
                 if asignatura == asig:
                     listamiembros.append({'dni': miembro.dni, 'nombre': miembro.nombre, 'correo': miembro.correo,

@@ -2,20 +2,20 @@ import requests
 import json
 
 
-# para comprobar que el dni sea valido
+# para comprobar que el DNI sea válido
 def nif(dni):
     dic = {'T': 0, 'R': 1, 'W': 2, 'A': 3, 'G': 4, 'M': 5, 'Y': 6, 'F': 7, 'P': 8, 'D': 9, 'X': 10, 'B': 11, 'N': 12,
            'J': 13, 'Z': 14, 'S': 15, 'Q': 16, 'V': 17, 'H': 18, 'L': 19, 'C': 20, 'K': 21, 'E': 22}
     # diccionario con las letras y sus respectivos restos
-    if len(dni) == 9:  # si el dni tiene 9 caracteres
+    if len(dni) == 9:  # si el DNI tiene 9 caracteres
         letra_control = dni[8].upper()  # nos quedamos con la letra
-        digitos = int(dni[:8])  # nos quedamos con los digitos
+        digitos = int(dni[:8])  # nos quedamos con los dígitos
         for letra, digit in dic.items():  # recorremos diccionario 
             if digit == (digitos % 23) and letra == letra_control:
-                # si el resto de dividir los digitos del DNI entre 23 coinciden con el digito del diccionario,
-                # asi como la letra
-                return "DNI valido"
-    return "No valido"
+                # si el resto de dividir los dígitos del DNI entre 23 coinciden con el dígito del diccionario,
+                # así como la letra
+                return "DNI válido"
+    return "No válido"
 
 
 while True:
@@ -26,7 +26,7 @@ while True:
             "Consultar la lista de todos los miembros de la Universidad." 
             "\n\t 4. Hacer consulta por DNI.\n\t 5. Consultar miembros según categoría.\n\t 6. Eliminar miembro ya "
             "existente.\n\t 7. Hacer consulta por nombre.\n\t 8. Hacer consulta por asignatura.\n\t 9. Salir.\n"))
-        if eleccion < 10 or eleccion > 0:  # si la eleccion se encuentra entre 1 y 6 (opciones validas)
+        if eleccion < 10 or eleccion > 0:  # si la elección se encuentra entre 1 y 9 (opciones validas)
             break
     if eleccion == 1:
         # dar de alta
@@ -34,14 +34,14 @@ while True:
         while True:
             dni = input("    - DNI: ")  # leemos DNI del usuario
             respuesta = nif(dni)
-            if respuesta == "DNI valido":
+            if respuesta == "DNI válido":
                 break
         nombre = input("    - Nombre completo: ")  # Leemos el nombre del usuario
         correo = input("    - Correo electrónico: ")  # Leemos correo
         departamento = input("    - Departamento: ")  # Leemos el departamento
         while True:
             cat = input("    - Categoria (PAS/PDI/becario): ")  # Leemos la categoria del usuario
-            if cat == "PAS" or cat == "PDI" or cat == "becario":  # la categoria debe ser una de las 3
+            if cat == "PAS" or cat == "PDI" or cat == "becario":  # la categoría debe ser una de las 3
                 break
         asig = []
         if cat == "PDI":  # si es PDI debe introducir las asignaturas
@@ -51,7 +51,7 @@ while True:
                     break
                 else:
                     asig.append(asignatura)
-        if len(asig) == 0:  # si la lista no tiene asignaturas (usuario no PDI), pongo - (vacio)
+        if len(asig) == 0:  # si la lista no tiene asignaturas (usuario no PDI), pongo - (vacío)
             asig.append("-")
         respuesta = requests.post('http://localhost:8080/AddMiembro',
                                   json={'dni': dni, 'nombre': nombre, 'correo': correo, 'departamento': departamento,
@@ -66,7 +66,7 @@ while True:
         departamento = input("    - Departamento: ")  # Leemos el departamento
         while True:
             cat = input("    - Categoria (PAS/PDI/becario): ")  # Leemos la categoria del usuario
-            if cat == "PAS" or cat == "PDI" or cat == "becario":  # la categoria debe ser una de las 3
+            if cat == "PAS" or cat == "PDI" or cat == "becario":  # la categoría debe ser una de las 3
                 break
         asig = []
         if cat == "PDI":  # si es PDI debe introducir las asignaturas
@@ -76,7 +76,7 @@ while True:
                     break
                 else:
                     asig.append(asignatura)
-        if len(asig) == 0:  # si la lista no tiene asignaturas (usuario no PDI), pongo - (vacio)
+        if len(asig) == 0:  # si la lista no tiene asignaturas (usuario no PDI), pongo - (vacío)
             asig.append("-")
 
         respuesta = requests.put('http://localhost:8080/ModificarMiembro/' + str(dni),
@@ -99,7 +99,7 @@ while True:
         print("Consultar miembros según categoría.")
         while True:
             cat = input("Introduce la categoría a consultar: ")  # Leemos la categoria del usuario
-            if cat == "PAS" or cat == "PDI" or cat == "becario":  # la categoria debe ser una de las 3
+            if cat == "PAS" or cat == "PDI" or cat == "becario":  # la categoría debe ser una de las 3
                 break
 
         respuesta = requests.get('http://localhost:8080/ConsultaCat/' + str(cat))
