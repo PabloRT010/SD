@@ -1,25 +1,22 @@
 import requests
 import json
 
+
 # para comprobar que el dni sea valido
-def nif(nif):
-    encontrado = False
-    dic = {'T': 0, 'R': 1, 'W': 2, 'A': 3, 'G': 4, 'M': 5, 'Y': 6, 'F': 7, 'P': 8, 'D': 9, 'X': 10, 'B': 11, 'N': 12, 'J': 13, 'Z': 14, 'S': 15, 'Q': 16,
-          'V': 17, 'H': 18, 'L': 19, 'C': 20, 'K': 21, 'E': 22}  # diccionario con las letras y sus respectivos restos
-    if (len(nif) == 9):  # si el dni tiene 9 caracteres
-        letraControl = nif[8].upper()  # nos quedamos con la letra
-        digitos = int(nif[:8])  # nos quedamos con los digitos
+def nif(dni):
+    dic = {'T': 0, 'R': 1, 'W': 2, 'A': 3, 'G': 4, 'M': 5, 'Y': 6, 'F': 7, 'P': 8, 'D': 9, 'X': 10, 'B': 11, 'N': 12,
+           'J': 13, 'Z': 14, 'S': 15, 'Q': 16, 'V': 17, 'H': 18, 'L': 19, 'C': 20, 'K': 21, 'E': 22}
+    # diccionario con las letras y sus respectivos restos
+    if len(dni) == 9:  # si el dni tiene 9 caracteres
+        letra_control = dni[8].upper()  # nos quedamos con la letra
+        digitos = int(dni[:8])  # nos quedamos con los digitos
         for letra, digit in dic.items():  # recorremos diccionario 
-            if digit == (digitos % 23) and letra == letraControl and encontrado == False:  # si el resto de dividir los digitos del DNI entre 23 coinciden con el digito del diccionario, asi como la letra y aun no se ha encontrado
-                encontrado = True  
-                return("DNI valido") 
-                
-        if encontrado == False:  # si no se ha encontrado elemento que coincida en la busqueda anterior (dni erroneo)
-            return("No valido")
-    else:  # si el dni introducido tiene menos caracteres de los que deberia
-        return("No valido")
-        
-            
+            if digit == (digitos % 23) and letra == letra_control:
+                # si el resto de dividir los digitos del DNI entre 23 coinciden con el digito del diccionario,
+                # asi como la letra
+                return "DNI valido"
+    return "No valido"
+
 
 while True:
     while True:
@@ -28,8 +25,8 @@ while True:
             "\t 1. Dar de alta un nuevo miembro en el directorio.\n\t 2. Modificar los datos de un miembro.\n\t 3. "
             "Consultar la lista de todos los miembros de la Universidad." 
             "\n\t 4. Hacer consulta por DNI.\n\t 5. Consultar miembros según categoría.\n\t 6. Eliminar miembro ya "
-            "existente.\n\t 7. Hacer consulta por nombre.\n\t 8. Salir.\n"))
-        if eleccion < 7 or eleccion > 0:  # si la eleccion se encuentra entre 1 y 6 (opciones validas)
+            "existente.\n\t 7. Hacer consulta por nombre.\n\t 8. Hacer consulta por asignatura.\n\t 9. Salir.\n"))
+        if eleccion < 10 or eleccion > 0:  # si la eleccion se encuentra entre 1 y 6 (opciones validas)
             break
     if eleccion == 1:
         # dar de alta
@@ -74,7 +71,7 @@ while True:
         asig = []
         if cat == "PDI":  # si es PDI debe introducir las asignaturas
             while True:
-                asignatura = input("Introduce el nombre de la asignatura: (escribe exit para salir) ")
+                asignatura = input("Introduce el nombre de la asignatura (escribe exit para salir): ")
                 if asignatura == 'exit':
                     break
                 else:
@@ -98,7 +95,6 @@ while True:
         respuesta = requests.get('http://localhost:8080/BuscarMiembro/' + str(dni))
         print(respuesta.text)
 
-
     if eleccion == 5:
         print("Consultar miembros según categoría.")
         while True:
@@ -108,7 +104,6 @@ while True:
 
         respuesta = requests.get('http://localhost:8080/ConsultaCat/' + str(cat))
         print(respuesta.text)  # Imprimimos
-
 
     if eleccion == 6:
         dni = input("Introduce el DNI del usuario: ")
@@ -122,4 +117,10 @@ while True:
         print(respuesta.text)
 
     if eleccion == 8:
+        print("Hacer consulta por asignatura.")
+        asig = input("Introduce el nombre de la asignatura: ")
+        respuesta = requests.get('http://localhost:8080/ConsultaAsig/' + str(asig))
+        print("Los miembros que pertenecen a la asignatura " + asig + " son:\n " + respuesta.text)
+
+    if eleccion == 9:
         break
