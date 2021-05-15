@@ -1,1 +1,0 @@
-functionGlobalContext:{fs:require('fs')}
